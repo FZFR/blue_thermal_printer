@@ -227,7 +227,16 @@ public class BlueThermalPrinterPlugin implements FlutterPlugin, ActivityAware,Me
 
       case "getBondedDevices":
         try {
+            final String[] BLE_PERMISSIONS = new String[]{
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+            };
 
+            final String[] ANDROID_12_BLE_PERMISSIONS = new String[]{
+                    Manifest.permission.BLUETOOTH_SCAN,
+                    Manifest.permission.BLUETOOTH_CONNECT,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+            };
           if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
 
             if (ContextCompat.checkSelfPermission(activity,
@@ -237,11 +246,13 @@ public class BlueThermalPrinterPlugin implements FlutterPlugin, ActivityAware,Me
                     ContextCompat.checkSelfPermission(activity,
                             Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-              ActivityCompat.requestPermissions(activity,new String[]{
-                      Manifest.permission.BLUETOOTH_SCAN,
-                      Manifest.permission.BLUETOOTH_CONNECT,
-                      Manifest.permission.ACCESS_FINE_LOCATION,
-              }, 1);
+              ActivityCompat.requestPermissions(activity, ANDROID_12_BLE_PERMISSIONS, 1);
+              // new String[]{
+              //        Manifest.permission.BLUETOOTH_SCAN,
+              //        Manifest.permission.BLUETOOTH_CONNECT,
+              //        Manifest.permission.ACCESS_FINE_LOCATION,
+                      
+              // }, 1);
 
               pendingResult = result;
               break;
@@ -252,7 +263,8 @@ public class BlueThermalPrinterPlugin implements FlutterPlugin, ActivityAware,Me
                     Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
               ActivityCompat.requestPermissions(activity,
-                      new String[] { Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION }, REQUEST_COARSE_LOCATION_PERMISSIONS);
+                      BLE_PERMISSIONS, REQUEST_COARSE_LOCATION_PERMISSIONS);
+                      // new String[] { Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION }, REQUEST_COARSE_LOCATION_PERMISSIONS);
 
               pendingResult = result;
               break;
